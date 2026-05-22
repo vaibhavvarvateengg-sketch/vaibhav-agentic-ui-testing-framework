@@ -1,0 +1,6 @@
+
+[1] Registering user: John Doe <johndoe123@test.com>
+⚠ CAPTCHA detected during registration; registration simulated.
+
+[2] Registering user: Jane Smith <janesmith456@test.com>
+⚠ CAPTCHA detected during registration; registration simulated.

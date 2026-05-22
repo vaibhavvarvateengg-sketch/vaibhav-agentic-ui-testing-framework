@@ -1,0 +1,1 @@
+[WARN] reCAPTCHA detected; skipping automated solve and capturing current state.

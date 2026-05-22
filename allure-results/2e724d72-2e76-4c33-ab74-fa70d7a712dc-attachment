@@ -1,0 +1,92 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: demoqaExcelRegistration.spec.ts >> DemoQA Excel-driven registration flow
+- Location: src\tests\demoqaExcelRegistration.spec.ts:54:1
+
+# Error details
+
+```
+Error: page.waitForTimeout: Target page, context or browser has been closed
+```
+
+# Test source
+
+```ts
+  1  | import { test, expect, Page } from '@playwright/test';
+  2  | import path from 'path';
+  3  | import { readUsersFromExcel, ExcelUser } from '../utils/excelUtils.js';
+  4  | 
+  5  | const DEMOQA_LOGIN_URL = 'https://demoqa.com/login';
+  6  | const EXCEL_FILE_PATH = path.join(process.cwd(), 'test-data', 'users.xlsx');
+  7  | 
+  8  | async function humanDelay(page: Page, min = 1000, max = 2000) {
+  9  |   const ms = Math.floor(Math.random() * (max - min + 1)) + min;
+  10 |   await page.waitForTimeout(ms);
+  11 | }
+  12 | 
+  13 | async function slowType(page: Page, selector: string, value: string) {
+  14 |   await page.focus(selector);
+  15 |   await page.type(selector, value, { delay: 100 });
+  16 | }
+  17 | 
+  18 | async function registerUser(page: Page, user: ExcelUser, index: number) {
+  19 |   console.log(`\n[${index + 1}] Registering user: ${user.firstName} ${user.lastName} <${user.email}>`);
+  20 |   await page.goto(DEMOQA_LOGIN_URL, { waitUntil: 'load' });
+  21 |   await page.waitForSelector('button#newUser', { timeout: 15000 });
+  22 |   await humanDelay(page);
+  23 | 
+  24 |   await page.click('button#newUser');
+  25 |   await page.waitForSelector('input#firstname', { timeout: 15000 });
+  26 |   await humanDelay(page);
+  27 | 
+  28 |   await slowType(page, 'input#firstname', user.firstName);
+> 29 |   await page.waitForTimeout(1000);
+     |              ^ Error: page.waitForTimeout: Target page, context or browser has been closed
+  30 |   await slowType(page, 'input#lastname', user.lastName);
+  31 |   await page.waitForTimeout(1000);
+  32 |   await slowType(page, 'input#userName', user.email);
+  33 |   await page.waitForTimeout(1000);
+  34 |   await slowType(page, 'input#password', 'Test@1234');
+  35 |   await humanDelay(page);
+  36 | 
+  37 |   await page.click('button#register');
+  38 |   await page.waitForTimeout(2000);
+  39 | 
+  40 |   const captchaVisible = await page.frameLocator('iframe[src*="recaptcha"]').locator('body').count().then(count => count > 0).catch(() => false);
+  41 |   if (captchaVisible) {
+  42 |     console.log('⚠ CAPTCHA detected during registration; registration simulated.');
+  43 |     return;
+  44 |   }
+  45 | 
+  46 |   const registrationSuccess = await page.locator('text=User Register Successfully').isVisible().catch(() => false);
+  47 |   if (registrationSuccess) {
+  48 |     console.log('✓ Registration succeeded.');
+  49 |   } else {
+  50 |     console.log('⚠ Registration did not show success message; user may already exist or extra validation is required.');
+  51 |   }
+  52 | }
+  53 | 
+  54 | test('DemoQA Excel-driven registration flow', async ({ page }) => {
+  55 |   const users = readUsersFromExcel(EXCEL_FILE_PATH);
+  56 |   if (!users.length) {
+  57 |     throw new Error(`No users found in Excel file: ${EXCEL_FILE_PATH}`);
+  58 |   }
+  59 | 
+  60 |   for (const [index, user] of users.entries()) {
+  61 |     try {
+  62 |       await registerUser(page, user, index);
+  63 |     } catch (error) {
+  64 |       console.error(`❌ Failed to register user ${user.email}:`, error);
+  65 |       await page.screenshot({ path: `demoqa-registration-failure-${index + 1}.png`, fullPage: true }).catch(() => undefined);
+  66 |       throw error;
+  67 |     }
+  68 |   }
+  69 | });
+  70 | 
+```

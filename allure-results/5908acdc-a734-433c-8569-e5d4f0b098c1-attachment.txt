@@ -1,0 +1,2 @@
+
+[1] Registering user: John Doe <johndoe123@test.com>

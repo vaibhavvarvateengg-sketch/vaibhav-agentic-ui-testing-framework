@@ -1,0 +1,3 @@
+[INFO] Navigating to registration page
+[INFO] Filling registration form
+[INFO] Submitting registration form

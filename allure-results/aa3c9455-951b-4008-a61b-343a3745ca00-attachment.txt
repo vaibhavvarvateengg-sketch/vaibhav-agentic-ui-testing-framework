@@ -1,0 +1,40 @@
+❌ Failed to register user johndoe123@test.com: page.waitForTimeout: Target page, context or browser has been closed
+    at humanDelay (C:\Users\2234087\TestProject\src\tests\demoqaExcelRegistration.spec.ts:10:14)
+    at registerUser (C:\Users\2234087\TestProject\src\tests\demoqaExcelRegistration.spec.ts:22:9)
+    at C:\Users\2234087\TestProject\src\tests\demoqaExcelRegistration.spec.ts:62:7 {
+  Symbol(step): {
+    location: {
+      file: 'C:\\Users\\2234087\\TestProject\\src\\tests\\demoqaExcelRegistration.spec.ts',
+      line: 10,
+      column: 14,
+      function: 'humanDelay'
+    },
+    category: 'pw:api',
+    title: 'Wait for timeout',
+    apiName: 'page.waitForTimeout',
+    params: { waitTimeout: 1739 },
+    group: undefined,
+    stepId: 'pw:api@41',
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@41',
+      _title: 'Wait for timeout',
+      _parentStep: undefined,
+      skip: [Function (anonymous)]
+    },
+    complete: [Function: complete],
+    endWallTime: 1779449771943,
+    error: {
+      message: 'Error: page.waitForTimeout: Target page, context or browser has been closed',
+      stack: 'Error: page.waitForTimeout: Target page, context or browser has been closed\n' +
+        '    at humanDelay (C:\\Users\\2234087\\TestProject\\src\\tests\\demoqaExcelRegistration.spec.ts:10:14)\n' +
+        '    at registerUser (C:\\Users\\2234087\\TestProject\\src\\tests\\demoqaExcelRegistration.spec.ts:22:9)\n' +
+        '    at C:\\Users\\2234087\\TestProject\\src\\tests\\demoqaExcelRegistration.spec.ts:62:7',
+      cause: undefined
+    }
+  }
+}
