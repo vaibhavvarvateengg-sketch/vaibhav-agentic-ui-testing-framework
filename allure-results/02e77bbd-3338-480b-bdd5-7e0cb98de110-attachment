@@ -1,0 +1,136 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: demoqaAgenticJourney.spec.ts >> Agentic DemoQA Journey: Launch → Registration → Login → Wait → Logout
+- Location: src\tests\demoqaAgenticJourney.spec.ts:100:1
+
+# Error details
+
+```
+Error: page.waitForTimeout: Target page, context or browser has been closed
+```
+
+# Test source
+
+```ts
+  1   | import { test, expect, Page } from '@playwright/test';
+  2   | 
+  3   | const DEMOQA_URL = 'https://demoqa.com';
+  4   | const FIRST_NAME = 'John';
+  5   | const LAST_NAME = 'Doe';
+  6   | const USERNAME = 'johndoe123';
+  7   | const PASSWORD = 'Test@1234';
+  8   | 
+  9   | // Ensure browser opens in non-headless mode and maximized for demo flow.
+  10  | test.use({ headless: false, viewport: null, launchOptions: { args: ['--start-maximized'] } });
+  11  | 
+  12  | async function humanDelay(page: Page, min = 1000, max = 2000) {
+  13  |   const ms = Math.floor(Math.random() * (max - min + 1)) + min;
+> 14  |   await page.waitForTimeout(ms);
+      |              ^ Error: page.waitForTimeout: Target page, context or browser has been closed
+  15  | }
+  16  | 
+  17  | async function slowType(page: Page, selector: string, value: string) {
+  18  |   await page.focus(selector);
+  19  |   await page.type(selector, value, { delay: 100 });
+  20  | }
+  21  | 
+  22  | async function launchApp(page: Page) {
+  23  |   console.log('\n[1] Launch Application');
+  24  |   await page.goto(DEMOQA_URL, { waitUntil: 'load' });
+  25  |   await page.waitForSelector('#root div.home-content', { timeout: 15000 });
+  26  |   await humanDelay(page);
+  27  |   console.log('✓ DemoQA homepage loaded');
+  28  | }
+  29  | 
+  30  | async function registerUser(page: Page) {
+  31  |   console.log('\n[2] Registration Flow (START FIRST)');
+  32  |   await page.goto(`${DEMOQA_URL}/login`, { waitUntil: 'load' });
+  33  |   await page.waitForSelector('button#newUser', { timeout: 15000 });
+  34  |   await humanDelay(page);
+  35  | 
+  36  |   console.log('→ Clicking New User');
+  37  |   await page.click('button#newUser');
+  38  |   await page.waitForSelector('input#firstname', { timeout: 15000 });
+  39  |   await humanDelay(page);
+  40  | 
+  41  |   console.log('→ Filling registration form');
+  42  |   await slowType(page, 'input#firstname', FIRST_NAME);
+  43  |   await page.waitForTimeout(1000);
+  44  |   await slowType(page, 'input#lastname', LAST_NAME);
+  45  |   await page.waitForTimeout(1000);
+  46  |   await slowType(page, 'input#userName', USERNAME);
+  47  |   await page.waitForTimeout(1000);
+  48  |   await slowType(page, 'input#password', PASSWORD);
+  49  |   await page.waitForTimeout(1000);
+  50  | 
+  51  |   console.log('→ Submitting registration');
+  52  |   await page.click('button#register');
+  53  |   await humanDelay(page);
+  54  | 
+  55  |   const successMessage = await page.locator('text=User Register Successfully').first().isVisible().catch(() => false);
+  56  |   const captchaVisible = await page.frameLocator('iframe[src*="recaptcha"]').locator('body').first().isVisible().catch(() => false);
+  57  | 
+  58  |   if (successMessage) {
+  59  |     console.log('✓ Account created successfully');
+  60  |   } else if (captchaVisible) {
+  61  |     console.log('⚠ Registration simulated: CAPTCHA blocked submission');
+  62  |   } else {
+  63  |     console.log('⚠ Registration submit completed, verification step may require manual confirmation');
+  64  |   }
+  65  | }
+  66  | 
+  67  | async function loginUser(page: Page) {
+  68  |   console.log('\n[3] Login Flow');
+  69  |   await page.goto(`${DEMOQA_URL}/login`, { waitUntil: 'networkidle' });
+  70  |   await page.waitForSelector('input#userName', { timeout: 15000 });
+  71  |   await humanDelay(page);
+  72  | 
+  73  |   console.log('→ Entering credentials');
+  74  |   await slowType(page, 'input#userName', USERNAME);
+  75  |   await page.waitForTimeout(1000);
+  76  |   await slowType(page, 'input#password', PASSWORD);
+  77  |   await page.waitForTimeout(1000);
+  78  | 
+  79  |   await page.click('button#login');
+  80  |   await page.waitForTimeout(2000);
+  81  | 
+  82  |   const profileUrlLoaded = await page.waitForURL(/.*\/profile/, { timeout: 15000 }).then(() => true).catch(() => false);
+  83  |   const userLabelVisible = await page.locator('label#userName-value').isVisible().catch(() => false);
+  84  | 
+  85  |   if (!profileUrlLoaded && !userLabelVisible) {
+  86  |     throw new Error('Login validation failed: profile page not loaded');
+  87  |   }
+  88  | 
+  89  |   console.log('✓ Login successful');
+  90  | }
+  91  | 
+  92  | async function logoutUser(page: Page) {
+  93  |   console.log('\n[5] Logout Flow');
+  94  |   await page.locator('button:has-text("Log out"), button:has-text("Logout")').first().click();
+  95  |   await page.waitForSelector('input#userName', { timeout: 15000 });
+  96  |   await page.waitForTimeout(2000);
+  97  |   console.log('✓ Logged out and redirected to login page');
+  98  | }
+  99  | 
+  100 | test('Agentic DemoQA Journey: Launch → Registration → Login → Wait → Logout', async ({ page }) => {
+  101 |   try {
+  102 |     await launchApp(page);
+  103 |     await registerUser(page);
+  104 |     await loginUser(page);
+  105 | 
+  106 |     console.log('\n[4] Stay on profile page for 5 seconds');
+  107 |     await page.waitForTimeout(5000);
+  108 |     console.log('✓ Wait complete');
+  109 | 
+  110 |     await logoutUser(page);
+  111 |     console.log('\n🎉 DemoQA agentic journey completed successfully');
+  112 |   } catch (error) {
+  113 |     console.error('❌ Script failed:', error);
+  114 |     await page.screenshot({ path: 'demoqa-agentic-failure.png', fullPage: true }).catch(() => undefined);
+```

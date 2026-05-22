@@ -1,0 +1,1 @@
+reCAPTCHA detected during registration; automation continues without solving captcha.

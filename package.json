@@ -1,0 +1,32 @@
+{
+  "name": "agentic-ui-testing",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node-esm src/index.ts",
+    "test": "node dist/tests/sampleTest.js",
+    "test:demoqa": "node dist/tests/demoQATest.js",
+    "test:all": "npx playwright test",
+    "test:ui": "npx playwright test src/tests/demoqa.spec.ts",
+    "playwright:install": "npx playwright install",
+    "report:generate": "npx allure generate allure-results --clean -o allure-report",
+    "report:open": "npx allure open allure-report"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "openai": "^4.0.0",
+    "playwright": "^1.40.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.0.0",
+    "allure-commandline": "^2.14.0",
+    "allure-playwright": "^2.0.0",
+    "ts-node": "^10.0.0",
+    "typescript": "^5.0.0"
+  }
+}
