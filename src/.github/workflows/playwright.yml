@@ -24,8 +24,13 @@ jobs:
       - name: Run Tests
         run: npx playwright test --workers=1
 
-      
+      # ✅ FIXED: properly indented
+      - name: Generate HTML Report
+        run: npx playwright show-report
+
+      # ✅ FIXED: ensure upload always happens
       - name: Upload Playwright Report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
