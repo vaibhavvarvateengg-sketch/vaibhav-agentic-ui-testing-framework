@@ -12,17 +12,26 @@ const config: PlaywrightTestConfig = {
     ['html', { outputFolder: 'playwright-report', open: 'never' }],
     ['allure-playwright', { outputFolder: 'allure-results', detail: true }]
   ],
-  use: {
-    headless: true,
-    viewport: null,
-    launchOptions: {
-      args: ['--start-maximized'],
-    },
-    trace: 'retain-on-failure',
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
-    actionTimeout: 10_000,
-  },
+  //use: {
+   // headless: true,
+   // viewport: null,
+    //launchOptions: {
+    //  args: ['--start-maximized'],
+   // },
+  //  trace: 'retain-on-failure',
+
+use: {
+headless: true,
+viewport: { width: 1920, height: 1080 }, // replace maximize
+launchOptions: {
+  args: []
+},
+
+trace: 'retain-on-failure',
+  screenshot: 'only-on-failure',
+  video: 'retain-on-failure',
+  actionTimeout: 10_000,
+},
 };
 
 export default config;
