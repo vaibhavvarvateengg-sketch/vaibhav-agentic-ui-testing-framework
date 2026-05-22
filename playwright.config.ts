@@ -13,7 +13,7 @@ const config: PlaywrightTestConfig = {
     ['allure-playwright', { outputFolder: 'allure-results', detail: true }]
   ],
   use: {
-    headless: false,
+    headless: true,
     viewport: null,
     launchOptions: {
       args: ['--start-maximized'],

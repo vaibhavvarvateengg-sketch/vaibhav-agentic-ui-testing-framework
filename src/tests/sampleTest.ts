@@ -1,4 +1,11 @@
-import { BrowserManager } from '../framework/browserManager.js';
+# Run DemoQA test (no API key needed!)
+npm run test:demoqa
+
+# Run AI-powered test (requires OPENAI_API_KEY)
+npm run test
+
+# Build project
+npm run buildimport { BrowserManager } from '../framework/browserManager.js';
 import { TestExecutor } from '../framework/testExecutor.js';
 import { AIAgent } from '../agents/aiAgent.js';
 import { logger } from '../utils/logger.js';
