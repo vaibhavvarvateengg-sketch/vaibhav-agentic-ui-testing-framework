@@ -1,0 +1,6 @@
+[INFO] Navigating to registration page
+[INFO] Filling registration form
+[INFO] Submitting registration form
+[INFO] Navigating to login page
+[INFO] Filling login credentials
+[INFO] Submitting login form

@@ -12,18 +12,18 @@ const config: PlaywrightTestConfig = {
 
   reporter: [
     ['list'],
-    // ✅ FIX: auto open report
     ['html', { outputFolder: 'playwright-report', open: 'always' }],
     ['allure-playwright', { outputFolder: 'allure-results', detail: true }]
   ],
 
   use: {
-    // ✅ UI mode enabled
-    headless: false,
-    viewport: null,
+    // 
+    headless: true,   //  change to true for headless
+
+    viewport: { width: 1920, height: 1080 },
 
     launchOptions: {
-      args: ['--start-maximized'],
+      args: [] //  no maximize to keep it simple
     },
 
     trace: 'retain-on-failure',
@@ -34,14 +34,5 @@ const config: PlaywrightTestConfig = {
 
   workers: 1
 };
-
-// use: {
-// headless: true,
-// viewport: { width: 1920, height: 1080 }, // replace maximize
-// launchOptions: {
-//   // args: []
-// },
-
-// trace: 'retain-on-failure',
 
 export default config;
