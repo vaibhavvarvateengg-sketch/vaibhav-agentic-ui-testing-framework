@@ -6,8 +6,14 @@ const LAST_NAME = 'Doe';
 const USERNAME = 'johndoe123';
 const PASSWORD = 'Test@1234';
 
-// Ensure browser opens in non-headless mode and maximized for demo flow.
-test.use({ headless: false, viewport: null, launchOptions: { args: ['--start-maximized'] } });
+// ✅ FIX: Make it CI-compatible (no headed/maximize in CI)
+test.use({
+  headless: process.env.CI ? true : false,
+  viewport: { width: 1920, height: 1080 },
+  launchOptions: {
+    args: []
+  }
+});
 
 async function humanDelay(page: Page, min = 1000, max = 2000) {
   const ms = Math.floor(Math.random() * (max - min + 1)) + min;
