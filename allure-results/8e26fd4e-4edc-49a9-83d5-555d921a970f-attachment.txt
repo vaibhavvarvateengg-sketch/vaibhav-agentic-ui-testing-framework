@@ -1,0 +1,21 @@
+
+[1] Launch Application
+✓ DemoQA homepage loaded
+
+[2] Registration Flow (START FIRST)
+→ Clicking New User
+→ Filling registration form
+→ Submitting registration
+⚠ Registration simulated: CAPTCHA blocked submission
+
+[3] Login Flow
+→ Entering credentials
+✓ Login successful
+
+[4] Stay on profile page for 5 seconds
+✓ Wait complete
+
+[5] Logout Flow
+✓ Logged out and redirected to login page
+
+🎉 DemoQA agentic journey completed successfully

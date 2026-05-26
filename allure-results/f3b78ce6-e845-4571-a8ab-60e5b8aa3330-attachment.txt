@@ -1,0 +1,6 @@
+
+[1] Registering user: TestFname1 TestLname1 <vaibhav.varvate@cognizant.com.invalid1>
+⚠ CAPTCHA detected during registration; registration simulated.
+
+[2] Registering user: TestFname2 TestLname2 <vaibhav.varvate@cognizant.com.invalid2>
+⚠ CAPTCHA detected during registration; registration simulated.

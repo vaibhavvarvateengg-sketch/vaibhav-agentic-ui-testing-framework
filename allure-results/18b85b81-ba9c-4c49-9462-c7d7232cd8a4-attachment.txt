@@ -1,0 +1,5 @@
+
+[1] Launch Application
+✓ DemoQA homepage loaded
+
+[2] Registration Flow (START FIRST)
